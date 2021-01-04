@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+includes:
+  graphql:
+    taskfile: ./graphql/Taskfile.yml
+    dir: ./graphql
+  reactive:
+    taskfile: ./reactive-rest/Taskfile.yml
+    dir: ./reactive-rest
+  rest:
+    taskfile: ./simple-rest/Taskfile.yml
+    dir: ./simple-rest
+
+tasks:
+  default:
+    cmds:
+      - docker-compose down --remove-orphans
+      - task rest:build-docker
+      - task reactive:build-docker
+      - task graphql:build-docker
+      - docker-compose up -d

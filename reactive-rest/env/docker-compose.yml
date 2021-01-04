@@ -1,0 +1,14 @@
+version: "3.3"
+
+networks:
+  rest-network:
+
+services:
+  mongo:
+    image: 'mongo:latest'
+    container_name: mongodb-local
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - rest-network

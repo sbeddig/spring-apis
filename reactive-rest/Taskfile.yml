@@ -1,0 +1,35 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: run
+
+  spinup-environment:
+    desc: spinup the environment
+    dir: ./env
+    cmds:
+      - docker-compose up -d &> /dev/null
+    silent: true
+
+  build:
+    desc: builds the artifact
+    deps: [ spinup-environment ]
+    cmds:
+      - ./gradlew clean build
+
+  run:
+    desc: rungs the build artifact
+    deps: [ build ]
+    dir: ./build/libs
+    cmds:
+      - java -jar *-0.0.1-SNAPSHOT.jar
+
+  build-docker:
+    deps: [ build ]
+    desc: build docker-image
+    cmds:
+      - docker build . -t reactive-api:latest --label reactive &> /dev/null
+      - docker image prune --force --filter='label=reactive' &> /dev/null

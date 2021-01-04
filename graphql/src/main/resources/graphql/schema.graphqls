@@ -1,0 +1,14 @@
+type Article {
+    id: ID!
+    name: String!
+}
+
+type Query {
+    getAllArticles: [Article]!
+    getArticleById(id: String): Article
+}
+
+type Mutation {
+    addArticle(name: String!): Article!
+    deleteArticle(id: String!): Article
+}
