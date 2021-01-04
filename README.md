@@ -2,7 +2,16 @@
 
 This repository gives examples for different spring api technics to communication with other services or frontends like angular, vue or react.
 
-## api-technic
+**Table of Contents**
+
+- [api-technology](#api-technology)
+- [usage](#usage)
+- [services](#services)
+    - [simple-rest-api](#simple-rest-api)
+    - [reactive-rest-api](#reactive-rest-api)
+    - [graphql-api](#graphql-api)
+
+## api-technology
 
 - [simple-rest](simple-rest)
 - [reactive-rest](reactive-rest)
@@ -45,7 +54,7 @@ PUT http://localhost:8082/rest/articles/{id}
 DELETE http://localhost:8082/rest/articles/{id}
 ```
 
-### reactive-rest-api
+### graphql-api
 
 Endpoints:
 ```shell
