@@ -1,6 +1,6 @@
 # spring-apis
 
-This repository gives examples for different spring api technics to communication with other services or frontends like angular, vue or react.
+This repository gives examples for different spring api techniques to communication with other services or frontends like angular, vue or react. Every service provides CRUD operations.
 
 **Table of Contents**
 
