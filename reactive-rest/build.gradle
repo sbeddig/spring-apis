@@ -27,6 +27,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo"
 }
 
 test {
