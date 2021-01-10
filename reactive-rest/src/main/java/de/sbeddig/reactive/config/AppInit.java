@@ -28,16 +28,20 @@ public class AppInit implements ApplicationListener<ApplicationReadyEvent> {
     public void initRepository() {
         mongoDbClient.deleteAll()
                 .thenMany(
-                        Flux.just("camera", "pc", "tablet", "notebook", "smartphone")
-                                .map(this::createArticle)
+                        Flux.just(aArticle("1", "camera"),
+                                aArticle("2", "pc"),
+                                aArticle("3", "tablet"),
+                                aArticle("4", "notebook"),
+                                aArticle("5", "smartphone"))
                                 .flatMap(addArticle::add)
                 )
                 .thenMany(mongoDbClient.findAll())
                 .subscribe(article -> LoggerFactory.getLogger(AppInit.class).info("{} saved.", article));
     }
 
-    private Article createArticle(String name) {
+    private Article aArticle(String id, String name) {
         return Article.builder()
+                .id(id)
                 .name(name)
                 .build();
     }

@@ -21,6 +21,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @RestController
 @RequestMapping(path = "reactive/articles")
 public class ArticleController {
@@ -37,7 +39,7 @@ public class ArticleController {
         this.updateArticleUseCase = updateArticleUseCase;
     }
 
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping
     public Flux<ArticleApiModel> getAllArticles() {
         return findArticleUseCase.getAll().flatMap(article -> Mono.just(ArticleApiModel.of(article)));
     }
@@ -71,6 +73,12 @@ public class ArticleController {
         return deleteArticleUseCase.delete(id)
                 .map(article -> ResponseEntity.noContent().<Void>build())
                 .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(value = "/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<String> getEvents() {
+        return Flux.interval(Duration.ofSeconds(1))
+                .map(aLong -> aLong+".Event");
     }
 
     private Article toArticle(ArticleApiModel articleApiModel) {
