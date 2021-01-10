@@ -46,7 +46,7 @@ public class ArticleController {
     public Mono<ResponseEntity<ArticleApiModel>> getArticleById(@PathVariable String id) {
         return findArticleUseCase.getById(id)
                 .map(article -> ResponseEntity.ok(ArticleApiModel.of(article)))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -59,19 +59,18 @@ public class ArticleController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<ArticleApiModel>> updateArticle(@PathVariable String id, @RequestBody ArticleApiModel articleApiModel) {
-        Mono<Article> updatedArticle = updateArticleUseCase.update(id, toArticle(articleApiModel));
-
-        return updatedArticle
+    public Mono<ResponseEntity<ArticleApiModel>> updateArticle(@PathVariable String id,
+                                                               @RequestBody ArticleApiModel articleApiModel) {
+        return updateArticleUseCase.update(id, toArticle(articleApiModel))
                 .map(article -> ResponseEntity.ok(ArticleApiModel.of(article)))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(path = "/{id}")
-    public Mono<ResponseEntity<Object>> deleteArticle(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable String id) {
         return deleteArticleUseCase.delete(id)
-                .then(Mono.just(ResponseEntity.noContent().build()))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+                .map(article -> ResponseEntity.noContent().<Void>build())
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     private Article toArticle(ArticleApiModel articleApiModel) {

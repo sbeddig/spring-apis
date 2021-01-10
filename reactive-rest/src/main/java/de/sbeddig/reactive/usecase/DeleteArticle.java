@@ -12,9 +12,9 @@ public class DeleteArticle {
         this.articleRepository = articleRepository;
     }
 
-    public Mono<Void> delete(String id) {
-        Mono<Article> articleFromRepo = articleRepository.getById(id);
-        return articleFromRepo.then(articleRepository.deleteById(id)).switchIfEmpty(Mono.empty());
+    public Mono<Article> delete(String id) {
+        return articleRepository.getById(id)
+                .flatMap(article -> articleRepository.deleteById(article.getId()).thenReturn(article));
     }
 
 
