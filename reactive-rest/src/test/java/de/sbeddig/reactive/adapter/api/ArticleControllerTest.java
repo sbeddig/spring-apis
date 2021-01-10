@@ -22,7 +22,11 @@ class ArticleControllerTest {
 
     @BeforeEach
     public void init() {
-        client = WebTestClient.bindToController(articleController).build();
+        client = WebTestClient
+                .bindToController(articleController)
+                .configureClient()
+                .baseUrl("/reactive")
+                .build();
         appInit.initRepository();
     }
 
@@ -30,7 +34,7 @@ class ArticleControllerTest {
     void allArticlesShouldBeReturned() {
         client
                 .get()
-                .uri("/reactive/articles")
+                .uri("/articles")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(ArticleApiModel.class).hasSize(5);
@@ -39,7 +43,7 @@ class ArticleControllerTest {
     @Test
     void articleShouldBeDeleted() {
         client.delete()
-                .uri("/reactive/articles/1")
+                .uri("/articles/1")
                 .exchange()
                 .expectStatus()
                 .isNoContent();
