@@ -4,7 +4,7 @@ MAINTAINER simon.beddig@googlemail.com
 ENV JAVA_VERSION 11.0.7.10.1
 
 RUN apt update && \
-    apt upgrade && \
+    apt upgrade -y && \
     apt install --no-install-recommends -y wget ca-certificates && \
     apt clean
 
